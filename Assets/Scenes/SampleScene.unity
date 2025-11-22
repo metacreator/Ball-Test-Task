@@ -136,9 +136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8edcd53f48c5eec48a5f9892bcc3ee4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player.PlayerBall
-  startVolume: 10
-  minVolume: 2
-  moveSpeed: 5
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,6 +664,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInput
   projectilePrefab: {fileID: 1924538324390434410, guid: 6dee33ffca1e03c4eb382b92f18e87e4, type: 3}
   cam: {fileID: 330585545}
+  playerBall: {fileID: 14480033}
+  minScale: 0.15
+  maxScale: 0.35
+  pulseDuration: 0.4
 --- !u!1001 &974782010217507330
 PrefabInstance:
   m_ObjectHideFlags: 0
