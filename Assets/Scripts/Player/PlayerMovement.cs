@@ -13,8 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private LayerMask obstacleMask;
 
-    private bool _isMoving;
-    public bool IsMoving => _isMoving;
+    public bool IsMoving { get; private set; }
 
     private void OnEnable()
     {
@@ -28,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void TryMoveForward()
     {
-        if (_isMoving) return;
+        if (IsMoving) return;
 
         var pos = transform.position;
         var dir = (door.position - pos);
@@ -43,7 +42,11 @@ public class PlayerMovement : MonoBehaviour
                 obstacleMask))
         {
             var playerRadius = transform.localScale.x * 0.5f;
-            var d = hit.distance - (playerRadius + stopBeforeObstacle);
+            var obstacleRadius = hit.collider.bounds.extents.x;
+
+            var extraOffset = obstacleRadius * 0.5f;
+
+            var d = hit.distance - (playerRadius + stopBeforeObstacle + extraOffset);
 
             if (d <= 0.1f)
                 return;
@@ -51,7 +54,6 @@ public class PlayerMovement : MonoBehaviour
             var target = pos + dir * d;
             MoveTo(target);
         }
-
         else
         {
             var target = new Vector3(door.position.x, pos.y, door.position.z);
@@ -59,23 +61,36 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+
     private void MoveTo(Vector3 target)
     {
-        _isMoving = true;
+        IsMoving = true;
 
-        var baseY = transform.position.y;
+        var start = transform.position;
+        var baseY = start.y;
 
-        var seq = DOTween.Sequence();
+        var dist = Vector3.Distance(start, target);
 
-        seq.Append(transform.DOMoveY(baseY + bounceHeight, moveDuration * 0.5f)
-            .SetEase(Ease.OutQuad));
+        var jumps =
+            dist < 2f ? 1 :
+            dist < 4f ? 2 :
+            dist < 7f ? 3 :
+            4;
 
-        seq.Join(transform.DOMoveX(target.x, moveDuration).SetEase(Ease.InOutSine));
-        seq.Join(transform.DOMoveZ(target.z, moveDuration).SetEase(Ease.InOutSine));
+        var duration = Mathf.Clamp(dist * 0.25f, 0.3f, 0.9f);
 
-        seq.Append(transform.DOMoveY(baseY, moveDuration * 0.5f)
-            .SetEase(Ease.InQuad));
+        var jumpPower = bounceHeight;
 
-        seq.OnComplete(() => _isMoving = false);
+        transform
+            .DOJump(target, jumpPower, jumps, duration)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                var pos = transform.position;
+                pos.y = baseY;
+                transform.position = pos;
+
+                IsMoving = false;
+            });
     }
 }
