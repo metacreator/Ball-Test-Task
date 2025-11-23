@@ -3,27 +3,48 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float flySpeed = 12f;
+    [SerializeField] private float lifetime = 3f;
+    [SerializeField] private Rigidbody _rigidbody;
 
     private InfectionHandler handler;
-    private LayerMask obstacleMask;
-    private bool fly;
+
     private float lockedY;
+    private float timer;
+    private bool flying;
+
     public float CurrentScale { get; private set; }
 
-    public void Initialize(InfectionHandler h, LayerMask mask)
+    public void Initialize(InfectionHandler handler)
     {
-        handler = h;
-        obstacleMask = mask;
-        lockedY = transform.position.y;
+        this.handler = handler;
 
-        var rb = GetComponent<Rigidbody>();
-        rb.isKinematic = true;
-        rb.useGravity = false;
+        _rigidbody.isKinematic = true;
+        _rigidbody.useGravity = false;
+
+        lockedY = transform.position.y;
+    }
+
+    public void SetScale(float scale)
+    {
+        CurrentScale = scale;
+        transform.localScale = Vector3.one * scale;
+    }
+
+    public void Launch()
+    {
+        flying = true;
     }
 
     private void Update()
     {
-        if (!fly) return;
+        if (!flying) return;
+
+        timer += Time.deltaTime;
+        if (timer >= lifetime)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         var pos = transform.position;
         pos += transform.forward * (flySpeed * Time.deltaTime);
@@ -31,21 +52,20 @@ public class Projectile : MonoBehaviour
         transform.position = pos;
     }
 
-    public void SetScale(float s)
-    {
-        CurrentScale = s;
-        transform.localScale = Vector3.one * s;
-    }
-
-    public void Launch()
-    {
-        fly = true;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if ((obstacleMask.value & (1 << other.gameObject.layer)) == 0) return;
-        fly = false;
+        if (other.GetComponent<Obstacle>() == null) return;
+        flying = false;
+
+        handler.HandleProjectileHit(transform.position, CurrentScale);
+        Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.GetComponent<Obstacle>() == null) return;
+        flying = false;
+
         handler.HandleProjectileHit(transform.position, CurrentScale);
         Destroy(gameObject);
     }

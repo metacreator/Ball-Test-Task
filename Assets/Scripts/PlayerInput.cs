@@ -9,13 +9,15 @@ public class PlayerInput : MonoBehaviour
 
     [SerializeField] private float spawnDistance = 0.6f;
 
-    [SerializeField] private float minScale = 0.15f;
+    [Header("Charge Settings")] [SerializeField]
+    private float minScale = 0.15f;
+
     [SerializeField] private float maxScale = 0.35f;
     [SerializeField] private float chargeSpeed = 0.3f;
 
     private InputSystemActions _controls;
-    private Projectile _projectile;
-    private ChargeScaler _scaler;
+    private Projectile _currentProjectile;
+    private ChargeScaler _chargeScaler;
 
     private void Awake()
     {
@@ -38,28 +40,34 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        _scaler?.Tick(Time.deltaTime);
+        _chargeScaler?.Tick(Time.deltaTime);
     }
 
     private void OnTapStarted(InputAction.CallbackContext ctx)
     {
         var dir = (doorTarget.position - playerBall.transform.position).normalized;
-
         var spawnPos = playerBall.transform.position + dir * spawnDistance;
         spawnPos.y = playerBall.transform.position.y;
 
-        _projectile = infectionHandler.SpawnProjectile(spawnPos, dir);
+        _currentProjectile = infectionHandler.SpawnProjectile(spawnPos, dir);
 
-        _scaler = new ChargeScaler(_projectile, playerBall, minScale, maxScale, chargeSpeed);
-        _scaler.StartCharging();
+        _chargeScaler = new ChargeScaler(
+            _currentProjectile,
+            playerBall,
+            minScale,
+            maxScale,
+            chargeSpeed
+        );
+        _chargeScaler.StartCharging();
     }
+
 
     private void OnTapCanceled(InputAction.CallbackContext ctx)
     {
-        _scaler?.StopCharging();
-        _projectile?.Launch();
+        _chargeScaler?.StopCharging();
+        _currentProjectile?.Launch();
 
-        _scaler = null;
-        _projectile = null;
+        _chargeScaler = null;
+        _currentProjectile = null;
     }
 }

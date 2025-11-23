@@ -2,27 +2,25 @@ using UnityEngine;
 
 public class InfectionHandler : MonoBehaviour
 {
-    [SerializeField] private Projectile projectilePrefab;
-    [SerializeField] private LayerMask obstacleMask;
+    [Header("Projectile Settings")] [SerializeField]
+    private Projectile projectilePrefab;
 
-    private readonly Collider[] _results = new Collider[64]; 
+    [Header("Explosion Settings")] [SerializeField]
+    private ExplosionFX explosionPrefab;
 
-    public Projectile SpawnProjectile(Vector3 pos, Vector3 dir)
+    [SerializeField] private float explosionMultiplier = 3f;
+
+
+    public Projectile SpawnProjectile(Vector3 position, Vector3 direction)
     {
-        var proj = Instantiate(projectilePrefab, pos, Quaternion.LookRotation(dir));
-        proj.Initialize(this, obstacleMask);
-        return proj;
+        var projectile = Instantiate(projectilePrefab, position, Quaternion.LookRotation(direction));
+        projectile.Initialize(this);
+        return projectile;
     }
 
     public void HandleProjectileHit(Vector3 hitPoint, float projectileScale)
     {
-        var radius = projectileScale * 3f;
-        var count = Physics.OverlapSphereNonAlloc(hitPoint, radius, _results, obstacleMask);
-
-        for (var i = 0; i < count; i++)
-        {
-            _results[i].GetComponent<Obstacle>()?.Infect();
-            _results[i] = null;
-        }
+        var explosion = Instantiate(explosionPrefab, hitPoint, Quaternion.identity);
+        explosion.Initialize(projectileScale, explosionMultiplier);
     }
 }
