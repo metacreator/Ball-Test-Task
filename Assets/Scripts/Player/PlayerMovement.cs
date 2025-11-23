@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask obstacleMask;
 
     private bool _isMoving;
+    public bool IsMoving => _isMoving;
 
     private void OnEnable()
     {
@@ -37,17 +38,17 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.SphereCast(pos + Vector3.up * 0.5f,
                 sphereRadius,
                 dir,
-                out RaycastHit hit,
+                out var hit,
                 100f,
                 obstacleMask))
         {
-            float playerRadius = transform.localScale.x * 0.5f;
-            float d = hit.distance - (playerRadius + stopBeforeObstacle);
+            var playerRadius = transform.localScale.x * 0.5f;
+            var d = hit.distance - (playerRadius + stopBeforeObstacle);
 
             if (d <= 0.1f)
                 return;
 
-            Vector3 target = pos + dir * d;
+            var target = pos + dir * d;
             MoveTo(target);
         }
 

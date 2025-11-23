@@ -119,49 +119,22 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &14480028 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 689473239511618463, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
+--- !u!114 &14480033 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1829924010432203717, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
   m_PrefabInstance: {fileID: 974782010217507330}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &14480033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14480028}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8edcd53f48c5eec48a5f9892bcc3ee4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player.PlayerBall
-  minAllowedScale: 0.2
 --- !u!4 &14480037 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1616976320324778771, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
   m_PrefabInstance: {fileID: 974782010217507330}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &14480038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14480028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5552435e2b7922c41ae2fd2f9ac01b75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveDuration: 0.45
-  bounceHeight: 1
-  stopBeforeObstacle: 0.6
-  sphereRadius: 0.25
-  door: {fileID: 1787243840}
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1119,18 +1092,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 1616976320324778771, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1616976320324778771, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1616976320324778771, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 3
-      objectReference: {fileID: 0}
+    - target: {fileID: 1267400653253375742, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
+      propertyPath: door
+      value: 
+      objectReference: {fileID: 1787243840}
     - target: {fileID: 1616976320324778771, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.18
@@ -1174,13 +1139,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 689473239511618463, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 14480033}
-    - targetCorrespondingSourceObject: {fileID: 689473239511618463, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 14480038}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

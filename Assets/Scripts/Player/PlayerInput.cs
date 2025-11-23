@@ -49,6 +49,8 @@ public class PlayerInput : MonoBehaviour
 
     private void OnTapStarted(InputAction.CallbackContext ctx)
     {
+        if(playerBall.IsMoving) return;
+        
         var screenPos = _controls.Player.TapPosition.ReadValue<Vector2>();
         var ray = Camera.main.ScreenPointToRay(screenPos);
 
