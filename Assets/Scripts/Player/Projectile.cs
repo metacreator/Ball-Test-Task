@@ -6,12 +6,23 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float flySpeed = 12f;
 
     private bool _fly;
+    private float _lockedY;
+
+    private void Awake()
+    {
+        _lockedY = transform.position.y;
+    }
 
     private void Update()
     {
-        if (_fly)
-            transform.position += transform.forward * (flySpeed * Time.deltaTime);
+        if (!_fly) return;
+        var pos = transform.position;
+        pos += transform.forward * (flySpeed * Time.deltaTime);
+        pos.y = _lockedY;
+
+        transform.position = pos;
     }
+
 
     public void SetScale(float scale)
     {

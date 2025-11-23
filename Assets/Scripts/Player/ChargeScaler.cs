@@ -1,62 +1,59 @@
 using UnityEngine;
-using DG.Tweening;
 
 public class ChargeScaler
 {
-    private readonly float _minScale;
-    private readonly float _maxScale;
-    private readonly float _pulseDuration;
-
-    private Tween _pulseTween;
-    private float _lastScale;
-
     private readonly Projectile _projectile;
     private readonly PlayerBall _playerBall;
 
-    public ChargeScaler(Projectile projectile, PlayerBall playerBall,
-        float minScale, float maxScale, float pulseDuration)
+    private readonly float _minScale;
+    private readonly float _maxScale;
+    private readonly float _chargeSpeed;
+
+    private float _currentScale;
+    private bool _charging;
+
+    public ChargeScaler(
+        Projectile projectile,
+        PlayerBall playerBall,
+        float minScale,
+        float maxScale,
+        float chargeSpeed)
     {
         _projectile = projectile;
         _playerBall = playerBall;
 
         _minScale = minScale;
         _maxScale = maxScale;
-        _pulseDuration = pulseDuration;
+        _chargeSpeed = chargeSpeed;
 
-        _lastScale = minScale;
-        projectile.SetScale(minScale);
+        _currentScale = minScale;
+
+        _projectile.SetScale(_currentScale);
     }
 
-    public void StartPulse()
+    public void StartCharging()
     {
-        _pulseTween = DOTween.Sequence()
-            .AppendCallback(() => PulseTo(_maxScale))
-            .AppendInterval(_pulseDuration)
-            .AppendCallback(() => PulseTo(_minScale))
-            .AppendInterval(_pulseDuration)
-            .SetLoops(-1);
+        _charging = true;
     }
 
-    private void PulseTo(float target)
+    public void StopCharging()
     {
-        DOTween.To(
-            () => _lastScale,
-            value =>
-            {
-                var delta = value - _lastScale;
-                _lastScale = value;
-
-                _projectile.SetScale(value);
-                _playerBall.ChangeScale(-delta);
-            },
-            target,
-            _pulseDuration
-        ).SetEase(Ease.InOutSine);
+        _charging = false;
     }
 
-    public void StopPulse()
+    public void Tick(float dt)
     {
-        _pulseTween?.Kill();
-        DOTween.Kill(_projectile.transform);
+        if (!_charging) return;
+
+        if (_currentScale >= _maxScale)
+            return;
+
+        float newScale = _currentScale + _chargeSpeed * dt;
+        float delta = newScale - _currentScale;
+
+        _currentScale = newScale;
+
+        _projectile.SetScale(_currentScale);
+        _playerBall.ChangeScale(-delta);
     }
 }
