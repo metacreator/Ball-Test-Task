@@ -6,6 +6,7 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private InfectionHandler infectionHandler;
     [SerializeField] private PlayerBall playerBall;
     [SerializeField] private Transform doorTarget;
+    [SerializeField] private Game game;
 
     [SerializeField] private float spawnDistance = 0.6f;
 
@@ -22,6 +23,9 @@ public class PlayerInput : MonoBehaviour
     private void Awake()
     {
         _controls = new InputSystemActions();
+
+        _chargeScaler = new ChargeScaler(playerBall, minScale, maxScale, chargeSpeed);
+        _chargeScaler.OnPlayerTooSmall += HandlePlayerTooSmall;
     }
 
     private void OnEnable()
@@ -40,7 +44,7 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        _chargeScaler?.Tick(Time.deltaTime);
+        _chargeScaler.Tick(Time.deltaTime);
     }
 
     private void OnTapStarted(InputAction.CallbackContext ctx)
@@ -51,23 +55,21 @@ public class PlayerInput : MonoBehaviour
 
         _currentProjectile = infectionHandler.SpawnProjectile(spawnPos, dir);
 
-        _chargeScaler = new ChargeScaler(
-            _currentProjectile,
-            playerBall,
-            minScale,
-            maxScale,
-            chargeSpeed
-        );
+        _chargeScaler.InitializeProjectile(_currentProjectile);
+
         _chargeScaler.StartCharging();
     }
 
-
     private void OnTapCanceled(InputAction.CallbackContext ctx)
     {
-        _chargeScaler?.StopCharging();
+        _chargeScaler.StopCharging();
         _currentProjectile?.Launch();
 
-        _chargeScaler = null;
         _currentProjectile = null;
+    }
+
+    private void HandlePlayerTooSmall()
+    {
+        game.Fail("Player too small to shoot");
     }
 }

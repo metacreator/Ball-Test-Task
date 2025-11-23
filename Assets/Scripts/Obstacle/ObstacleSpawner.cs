@@ -36,28 +36,24 @@ public class ObstacleSpawner : MonoBehaviour
             return;
         }
 
-        Vector3 start = player.position;
-        Vector3 end = door.position;
-        Vector3 forward = (end - start).normalized;
-        Vector3 right = Vector3.Cross(Vector3.up, forward).normalized;
+        var start = player.position;
+        var end = door.position;
+        var forward = (end - start).normalized;
+        var right = Vector3.Cross(Vector3.up, forward).normalized;
 
-        float totalDistance = Vector3.Distance(start, end);
+        var totalDistance = Vector3.Distance(start, end);
 
-        // Reduced depth to avoid spawning too close to player/door
-        float usableDepth = totalDistance - (playerOffset + doorOffset);
+        var usableDepth = totalDistance - (playerOffset + doorOffset);
 
-        for (int i = 0; i < obstacleCount; i++)
+        for (var i = 0; i < obstacleCount; i++)
         {
-            // random depth inside usable zone
-            float depthOffset = Random.Range(0f, usableDepth) - usableDepth * 0.5f;
+            var depthOffset = Random.Range(0f, usableDepth) - usableDepth * 0.5f;
 
-            // shift depth so it starts after playerOffset and before doorOffset
-            float forwardDist = depthOffset + (playerOffset - (doorOffset * 0.5f));
+            var forwardDist = depthOffset + (playerOffset - (doorOffset * 0.5f));
 
-            // random side offset
-            float sideOffset = Random.Range(-fieldWidth, fieldWidth);
+            var sideOffset = Random.Range(-fieldWidth, fieldWidth);
 
-            Vector3 spawnPos =
+            var spawnPos =
                 ((start + end) * 0.5f) +
                 forward * forwardDist +
                 right * sideOffset;

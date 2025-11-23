@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class PlayerBall : MonoBehaviour
 {
-    public void ChangeScale(float delta)
+    [SerializeField] private float minAllowedScale = 0.2f;
+    public float MinAllowedScale => minAllowedScale;
+    public float CurrentScale => transform.localScale.x;
+    public bool IsTooSmall => transform.localScale.x <= minAllowedScale;
+
+    public void SetScale(float s)
     {
-        var newScale = Mathf.Max(0.1f, transform.localScale.x + delta);
-        transform.localScale = Vector3.one * newScale;
+        transform.localScale = Vector3.one * s;
     }
 }
