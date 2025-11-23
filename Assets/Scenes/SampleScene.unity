@@ -766,7 +766,7 @@ MonoBehaviour:
   obstacleCount: 50
   fieldWidth: 7
   fieldDepth: 14
-  playerOffset: 2.5
+  playerOffset: 3
   doorOffset: 2
   yPosition: 2
 --- !u!1 &1199632261
@@ -1283,7 +1283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1616976320324778771, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.18
+      value: -5.75
       objectReference: {fileID: 0}
     - target: {fileID: 1616976320324778771, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1291,7 +1291,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1616976320324778771, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.16
+      value: -6.75
       objectReference: {fileID: 0}
     - target: {fileID: 1616976320324778771, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
       propertyPath: m_LocalRotation.w

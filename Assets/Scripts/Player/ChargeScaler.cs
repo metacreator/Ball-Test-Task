@@ -7,30 +7,28 @@ public class ChargeScaler
 
     private Projectile _projectile;
     private readonly PlayerBall _player;
-    private readonly float _minScale;
-    private readonly float _maxScale;
+    private readonly float _minProjectileScale;
     private readonly float _chargeSpeed;
 
     private float _currentScale;
     private bool _charging;
 
-    public ChargeScaler(PlayerBall player, float minScale, float maxScale, float chargeSpeed)
+    public ChargeScaler(PlayerBall player, float minProjectileScale, float chargeSpeed)
     {
         _player = player;
-        _minScale = minScale;
-        _maxScale = maxScale;
+        _minProjectileScale = minProjectileScale;
         _chargeSpeed = chargeSpeed;
     }
 
     public void InitializeProjectile(Projectile projectile)
     {
         _projectile = projectile;
-        _currentScale = _minScale;
+        _currentScale = _minProjectileScale;
     }
 
     public void StartCharging()
     {
-        if (_player.CurrentScale <= _player.MinAllowedScale)
+        if (_player.IsTooSmall)
         {
             OnPlayerTooSmall?.Invoke();
             return;
@@ -45,11 +43,11 @@ public class ChargeScaler
         _charging = false;
     }
 
-    public void Tick(float dt)
+    public void Tick(float deltaTime)
     {
         if (!_charging || !_projectile) return;
 
-        var grow = _chargeSpeed * dt;
+        var grow = _chargeSpeed * deltaTime;
 
         var nextProjectile = _currentScale + grow;
         var nextPlayer = _player.CurrentScale - grow;
@@ -61,11 +59,14 @@ public class ChargeScaler
             return;
         }
 
-        if (nextProjectile > _maxScale)
+        float absoluteMaxProjectile = _player.OriginalScale - 0.1f; 
+
+        if (nextProjectile > absoluteMaxProjectile)
         {
             _charging = false;
             return;
         }
+
 
         _currentScale = nextProjectile;
         _projectile.SetScale(_currentScale);

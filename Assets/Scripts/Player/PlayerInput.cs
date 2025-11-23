@@ -24,7 +24,7 @@ public class PlayerInput : MonoBehaviour
     {
         _controls = new InputSystemActions();
 
-        _chargeScaler = new ChargeScaler(playerBall, minScale, maxScale, chargeSpeed);
+        _chargeScaler = new ChargeScaler(playerBall, minScale, chargeSpeed);
         _chargeScaler.OnPlayerTooSmall += HandlePlayerTooSmall;
     }
 
