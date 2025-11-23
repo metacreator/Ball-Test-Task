@@ -4,6 +4,7 @@ public class Projectile : MonoBehaviour
 {
     public float CurrentScale { get; private set; }
     [SerializeField] private float flySpeed = 12f;
+    [SerializeField] private LayerMask obstacleMask;
 
     private bool _fly;
     private float _lockedY;
@@ -23,6 +24,23 @@ public class Projectile : MonoBehaviour
         transform.position = pos;
     }
 
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!_fly) return;
+
+        if ((obstacleMask.value & (1 << other.gameObject.layer)) == 0) return;
+        _fly = false;
+
+        var infectionRadius = CurrentScale * 3f;
+
+        InfectionHandler.Instance.ProcessInfection(
+            transform.position,
+            infectionRadius
+        );
+
+        Destroy(gameObject);
+    }
 
     public void SetScale(float scale)
     {
