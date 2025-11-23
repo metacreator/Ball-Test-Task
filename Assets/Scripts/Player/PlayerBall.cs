@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class PlayerBall : MonoBehaviour
 {
+    public event Action<float> OnScaleChanged;
+
     [SerializeField] private float minAllowedScale = 0.2f;
     public float MinAllowedScale => minAllowedScale;
     public float CurrentScale => transform.localScale.x;
@@ -10,5 +13,6 @@ public class PlayerBall : MonoBehaviour
     public void SetScale(float s)
     {
         transform.localScale = Vector3.one * s;
+        OnScaleChanged?.Invoke(s); 
     }
 }

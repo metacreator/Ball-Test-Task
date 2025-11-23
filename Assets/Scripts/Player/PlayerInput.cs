@@ -49,7 +49,21 @@ public class PlayerInput : MonoBehaviour
 
     private void OnTapStarted(InputAction.CallbackContext ctx)
     {
-        var dir = (doorTarget.position - playerBall.transform.position).normalized;
+        var screenPos = _controls.Player.TapPosition.ReadValue<Vector2>();
+        var ray = Camera.main.ScreenPointToRay(screenPos);
+
+        var plane = new Plane(Vector3.up, new Vector3(0, playerBall.transform.position.y, 0));
+
+        float enter;
+        if (!plane.Raycast(ray, out enter))
+            return;
+
+        var hitPoint = ray.GetPoint(enter);
+
+        var dir = (hitPoint - playerBall.transform.position);
+        dir.y = 0; 
+        dir.Normalize();
+
         var spawnPos = playerBall.transform.position + dir * spawnDistance;
         spawnPos.y = playerBall.transform.position.y;
 
@@ -59,6 +73,7 @@ public class PlayerInput : MonoBehaviour
 
         _chargeScaler.StartCharging();
     }
+
 
     private void OnTapCanceled(InputAction.CallbackContext ctx)
     {

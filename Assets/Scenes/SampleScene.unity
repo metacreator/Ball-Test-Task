@@ -1067,7 +1067,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037b87301b198f74cb3c0f680397c16b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PathRenderer
-  playerBall: {fileID: 14480037}
+  playerBall: {fileID: 14480033}
   doorTarget: {fileID: 1787243840}
   line: {fileID: 1883297086}
   lineHeight: 0.01

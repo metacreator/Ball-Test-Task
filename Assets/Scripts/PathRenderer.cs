@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class PathRenderer : MonoBehaviour
 {
-    [Header("References")] [SerializeField]
-    private Transform playerBall;
-
+    [Header("References")]
+    [SerializeField] private PlayerBall playerBall;
     [SerializeField] private Transform doorTarget;
     [SerializeField] private LineRenderer line;
 
-    [Header("Settings")] [SerializeField] private float lineHeight = 0.01f;
+    [Header("Settings")]
+    [SerializeField] private float lineHeight = 0.01f;
     [SerializeField] private float fadeDistance = 30f;
 
     private Material _mat;
@@ -20,6 +20,18 @@ public class PathRenderer : MonoBehaviour
         _mat = line.material;
         BuildPath();
         RefreshPath();
+
+        playerBall.OnScaleChanged += HandlePlayerScaleChanged;
+    }
+
+    private void OnDestroy()
+    {
+        playerBall.OnScaleChanged -= HandlePlayerScaleChanged;
+    }
+
+    private void HandlePlayerScaleChanged(float newScale)
+    {
+        UpdateWidth();
     }
 
     public void BuildPath()
@@ -29,7 +41,7 @@ public class PathRenderer : MonoBehaviour
 
         line.useWorldSpace = true;
 
-        var start = playerBall.position;
+        var start = playerBall.transform.position;
         var end = doorTarget.position;
 
         start = new Vector3(start.x, lineHeight, start.z);
@@ -48,7 +60,8 @@ public class PathRenderer : MonoBehaviour
 
     private void UpdateWidth()
     {
-        var size = playerBall.localScale.x;
+        float size = playerBall.CurrentScale;
+
         var curve = new AnimationCurve();
         curve.AddKey(0f, size);
         curve.AddKey(1f, size);
