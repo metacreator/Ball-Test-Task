@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
   flySpeed: 12
-  lifetime: 2
+  lifetime: 3
   _rigidbody: {fileID: 6630662065727548039}
 --- !u!54 &6630662065727548039
 Rigidbody:
