@@ -142,6 +142,26 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1616976320324778771, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
   m_PrefabInstance: {fileID: 974782010217507330}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &14480038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14480028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5552435e2b7922c41ae2fd2f9ac01b75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  moveDuration: 0.45
+  bounceHeight: 1
+  stopBeforeObstacle: 0.6
+  sphereRadius: 0.25
+  door: {fileID: 1787243840}
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1158,6 +1178,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 689473239511618463, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 14480033}
+    - targetCorrespondingSourceObject: {fileID: 689473239511618463, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 14480038}
   m_SourcePrefab: {fileID: 100100000, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
