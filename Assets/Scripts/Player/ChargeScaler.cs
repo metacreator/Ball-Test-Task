@@ -48,8 +48,8 @@ public class ChargeScaler
         if (_currentScale >= _maxScale)
             return;
 
-        float newScale = _currentScale + _chargeSpeed * dt;
-        float delta = newScale - _currentScale;
+        var newScale = _currentScale + _chargeSpeed * dt;
+        var delta = newScale - _currentScale;
 
         _currentScale = newScale;
 

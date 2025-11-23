@@ -60,10 +60,7 @@ public class PlayerInput : MonoBehaviour
 
     private void OnTapCanceled(InputAction.CallbackContext ctx)
     {
-        if (_chargeScaler != null)
-        {
-            _chargeScaler.StopCharging();
-        }
+        _chargeScaler?.StopCharging();
 
         if (_currentProjectile != null)
         {
@@ -76,18 +73,12 @@ public class PlayerInput : MonoBehaviour
 
     private Projectile SpawnProjectile()
     {
-        // direction from player to door
-        Vector3 dir = (doorTarget.position - playerBall.transform.position).normalized;
+        var dir = (doorTarget.position - playerBall.transform.position).normalized;
+        var spawnPos = playerBall.transform.position + dir * spawnDistance;
 
-        // spawn in front of player ball
-        Vector3 spawnPos = playerBall.transform.position + dir * spawnDistance;
-
-        // keep projectile at same height as player center
         spawnPos.y = playerBall.transform.position.y;
 
-        Projectile projectile = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
-
-        // projectile flies toward the door
+        var projectile = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
         projectile.transform.forward = dir;
 
         return projectile;

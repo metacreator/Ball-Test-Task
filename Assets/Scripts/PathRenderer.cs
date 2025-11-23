@@ -8,14 +8,16 @@ public class PathRenderer : MonoBehaviour
     [SerializeField] private Transform doorTarget;
     [SerializeField] private LineRenderer line;
 
-    [Header("Settings")] [SerializeField] private float lineHeight = 0.01f; // always above ground
+    [Header("Settings")] [SerializeField] private float lineHeight = 0.01f;
     [SerializeField] private float fadeDistance = 30f;
 
-    private Material mat;
+    private Material _mat;
+    private static readonly int FadeEnd = Shader.PropertyToID("_FadeEnd");
+    private static readonly int FadeStart = Shader.PropertyToID("_FadeStart");
 
     private void Awake()
     {
-        mat = line.material;
+        _mat = line.material;
         BuildPath();
         RefreshPath();
     }
@@ -27,9 +29,8 @@ public class PathRenderer : MonoBehaviour
 
         line.useWorldSpace = true;
 
-        // Force horizontal path (flat at Y = lineHeight)
-        Vector3 start = playerBall.position;
-        Vector3 end = doorTarget.position;
+        var start = playerBall.position;
+        var end = doorTarget.position;
 
         start = new Vector3(start.x, lineHeight, start.z);
         end = new Vector3(end.x, lineHeight, end.z);
@@ -47,9 +48,8 @@ public class PathRenderer : MonoBehaviour
 
     private void UpdateWidth()
     {
-        float size = playerBall.localScale.x;
-
-        AnimationCurve curve = new AnimationCurve();
+        var size = playerBall.localScale.x;
+        var curve = new AnimationCurve();
         curve.AddKey(0f, size);
         curve.AddKey(1f, size);
 
@@ -58,13 +58,13 @@ public class PathRenderer : MonoBehaviour
 
     private void UpdateFade()
     {
-        Vector3 start = line.GetPosition(0);
-        Vector3 end = line.GetPosition(1);
+        var start = line.GetPosition(0);
+        var end = line.GetPosition(1);
 
-        float dist = Vector3.Distance(start, end);
-        float fadeStart = Mathf.Clamp01((dist - fadeDistance) / dist);
+        var dist = Vector3.Distance(start, end);
+        var fadeStart = Mathf.Clamp01((dist - fadeDistance) / dist);
 
-        mat.SetFloat("_FadeStart", fadeStart);
-        mat.SetFloat("_FadeEnd", 1f);
+        _mat.SetFloat(FadeStart, fadeStart);
+        _mat.SetFloat(FadeEnd, 1f);
     }
 }
