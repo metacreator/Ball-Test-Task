@@ -408,8 +408,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 547711381}
+  - component: {fileID: 547711382}
   m_Layer: 0
-  m_Name: DoorGameObject
+  m_Name: DoorSequenceHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -431,6 +432,26 @@ Transform:
   - {fileID: 1199855249}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 130, z: 0}
+--- !u!114 &547711382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547711380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aa65a4f410a8a44db1423188ea87e4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoorSequence
+  doorAnimator: {fileID: 1985576130}
+  openAnim: Take 001
+  closeAnim: Take 001
+  doorExitPoint: {fileID: 898037784}
+  game: {fileID: 614337678}
+  moveThroughDuration: 0.5
+  afterOpenDelay: 0.3
+  afterMoveDelay: 0.3
 --- !u!1 &614337676
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,6 +680,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &898037783
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 898037784}
+  m_Layer: 0
+  m_Name: EndOfTheLevel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &898037784
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 898037783}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 20, y: -0, z: 21.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -932,7 +984,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1787243840}
   m_Layer: 0
-  m_Name: EndPoint
+  m_Name: DoorCentre
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1178,9 +1230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9de8012e4809fee49841c55724930f30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Door
-  animator: {fileID: 1985576130}
-  game: {fileID: 614337678}
-  animationName: Take 001
+  sequence: {fileID: 547711382}
 --- !u!95 &1985576130
 Animator:
   serializedVersion: 7
@@ -1275,4 +1325,5 @@ SceneRoots:
   - {fileID: 1199632265}
   - {fileID: 547711381}
   - {fileID: 1787243840}
+  - {fileID: 898037784}
   - {fileID: 1207211708}

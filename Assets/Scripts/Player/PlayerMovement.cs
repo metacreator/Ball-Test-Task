@@ -49,6 +49,9 @@ public class PlayerMovement : MonoBehaviour
                 100f,
                 obstacleMask))
         {
+            if (hit.collider.isTrigger)
+                return;
+            
             var playerRadius = transform.localScale.x * 0.5f;
             var obstacleRadius = hit.collider.bounds.extents.x;
 
