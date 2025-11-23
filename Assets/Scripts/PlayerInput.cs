@@ -3,21 +3,19 @@ using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
-    [SerializeField] private Projectile projectilePrefab;
+    [SerializeField] private InfectionHandler infectionHandler;
     [SerializeField] private PlayerBall playerBall;
     [SerializeField] private Transform doorTarget;
 
     [SerializeField] private float spawnDistance = 0.6f;
 
-    [Header("Charge Settings")] [SerializeField]
-    private float minScale = 0.15f;
-
+    [SerializeField] private float minScale = 0.15f;
     [SerializeField] private float maxScale = 0.35f;
     [SerializeField] private float chargeSpeed = 0.3f;
 
     private InputSystemActions _controls;
-    private Projectile _currentProjectile;
-    private ChargeScaler _chargeScaler;
+    private Projectile _projectile;
+    private ChargeScaler _scaler;
 
     private void Awake()
     {
@@ -40,47 +38,28 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        _chargeScaler?.Tick(Time.deltaTime);
+        _scaler?.Tick(Time.deltaTime);
     }
 
     private void OnTapStarted(InputAction.CallbackContext ctx)
     {
-        _currentProjectile = SpawnProjectile();
+        var dir = (doorTarget.position - playerBall.transform.position).normalized;
 
-        _chargeScaler = new ChargeScaler(
-            _currentProjectile,
-            playerBall,
-            minScale,
-            maxScale,
-            chargeSpeed
-        );
+        var spawnPos = playerBall.transform.position + dir * spawnDistance;
+        spawnPos.y = playerBall.transform.position.y;
 
-        _chargeScaler.StartCharging();
+        _projectile = infectionHandler.SpawnProjectile(spawnPos, dir);
+
+        _scaler = new ChargeScaler(_projectile, playerBall, minScale, maxScale, chargeSpeed);
+        _scaler.StartCharging();
     }
 
     private void OnTapCanceled(InputAction.CallbackContext ctx)
     {
-        _chargeScaler?.StopCharging();
+        _scaler?.StopCharging();
+        _projectile?.Launch();
 
-        if (_currentProjectile != null)
-        {
-            _currentProjectile.Launch();
-        }
-
-        _currentProjectile = null;
-        _chargeScaler = null;
-    }
-
-    private Projectile SpawnProjectile()
-    {
-        var dir = (doorTarget.position - playerBall.transform.position).normalized;
-        var spawnPos = playerBall.transform.position + dir * spawnDistance;
-
-        spawnPos.y = playerBall.transform.position.y;
-
-        var projectile = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
-        projectile.transform.forward = dir;
-
-        return projectile;
+        _scaler = null;
+        _projectile = null;
     }
 }

@@ -2,54 +2,51 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public float CurrentScale { get; private set; }
     [SerializeField] private float flySpeed = 12f;
-    [SerializeField] private LayerMask obstacleMask;
 
-    private bool _fly;
-    private float _lockedY;
+    private InfectionHandler handler;
+    private LayerMask obstacleMask;
+    private bool fly;
+    private float lockedY;
+    public float CurrentScale { get; private set; }
 
-    private void Awake()
+    public void Initialize(InfectionHandler h, LayerMask mask)
     {
-        _lockedY = transform.position.y;
+        handler = h;
+        obstacleMask = mask;
+        lockedY = transform.position.y;
+
+        var rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true;
+        rb.useGravity = false;
     }
 
     private void Update()
     {
-        if (!_fly) return;
+        if (!fly) return;
+
         var pos = transform.position;
         pos += transform.forward * (flySpeed * Time.deltaTime);
-        pos.y = _lockedY;
-
+        pos.y = lockedY;
         transform.position = pos;
     }
 
-
-    private void OnTriggerEnter(Collider other)
+    public void SetScale(float s)
     {
-        if (!_fly) return;
-
-        if ((obstacleMask.value & (1 << other.gameObject.layer)) == 0) return;
-        _fly = false;
-
-        var infectionRadius = CurrentScale * 3f;
-
-        InfectionHandler.Instance.ProcessInfection(
-            transform.position,
-            infectionRadius
-        );
-
-        Destroy(gameObject);
-    }
-
-    public void SetScale(float scale)
-    {
-        CurrentScale = scale;
-        transform.localScale = Vector3.one * scale;
+        CurrentScale = s;
+        transform.localScale = Vector3.one * s;
     }
 
     public void Launch()
     {
-        _fly = true;
+        fly = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if ((obstacleMask.value & (1 << other.gameObject.layer)) == 0) return;
+        fly = false;
+        handler.HandleProjectileHit(transform.position, CurrentScale);
+        Destroy(gameObject);
     }
 }

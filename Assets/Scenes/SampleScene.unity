@@ -538,6 +538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e75c2834ad84e334789889bb63431c46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InfectionHandler
+  projectilePrefab: {fileID: 1924538324390434410, guid: 6dee33ffca1e03c4eb382b92f18e87e4, type: 3}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 64
@@ -785,7 +786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4249ef3a22d5b7041803eede6ccd5d1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInput
-  projectilePrefab: {fileID: 1924538324390434410, guid: 6dee33ffca1e03c4eb382b92f18e87e4, type: 3}
+  infectionHandler: {fileID: 784983654}
   playerBall: {fileID: 14480033}
   doorTarget: {fileID: 1787243840}
   spawnDistance: 3
@@ -1013,7 +1014,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1616976320324778771, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 1.25
       objectReference: {fileID: 0}
     - target: {fileID: 1616976320324778771, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
       propertyPath: m_LocalPosition.z

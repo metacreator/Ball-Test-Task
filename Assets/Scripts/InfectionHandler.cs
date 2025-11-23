@@ -2,23 +2,27 @@ using UnityEngine;
 
 public class InfectionHandler : MonoBehaviour
 {
-    public static InfectionHandler Instance { get; private set; }
+    [SerializeField] private Projectile projectilePrefab;
+    [SerializeField] private LayerMask obstacleMask;
 
-    [SerializeField] private LayerMask obstacleMask; // set to Obstacle layer only
+    private readonly Collider[] _results = new Collider[64]; 
 
-    private void Awake()
+    public Projectile SpawnProjectile(Vector3 pos, Vector3 dir)
     {
-        Instance = this;
+        var proj = Instantiate(projectilePrefab, pos, Quaternion.LookRotation(dir));
+        proj.Initialize(this, obstacleMask);
+        return proj;
     }
 
-    public void ProcessInfection(Vector3 center, float radius)
+    public void HandleProjectileHit(Vector3 hitPoint, float projectileScale)
     {
-        // Only obstacles respond because only they are on this layer
-        var hits = Physics.OverlapSphere(center, radius, obstacleMask);
+        var radius = projectileScale * 3f;
+        var count = Physics.OverlapSphereNonAlloc(hitPoint, radius, _results, obstacleMask);
 
-        foreach (var hit in hits)
+        for (var i = 0; i < count; i++)
         {
-            hit.GetComponent<Obstacle>()?.Infect();
+            _results[i].GetComponent<Obstacle>()?.Infect();
+            _results[i] = null;
         }
     }
 }
