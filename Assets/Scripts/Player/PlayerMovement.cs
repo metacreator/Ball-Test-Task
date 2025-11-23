@@ -25,6 +25,14 @@ public class PlayerMovement : MonoBehaviour
         ExplosionFX.OnExplosionFinished -= TryMoveForward;
     }
 
+    public void StopImmediatelyInFrontOfDoor(Vector3 currentPos)
+    {
+        IsMoving = false;
+        DOTween.Kill(transform);
+        transform.position = new Vector3(currentPos.x, transform.position.y, currentPos.z);
+    }
+
+
     private void TryMoveForward()
     {
         if (IsMoving) return;
