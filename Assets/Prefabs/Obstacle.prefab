@@ -126,3 +126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31d41442f0ee48c4995f59bacf753414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Obstacle
+  explosionVFX: {fileID: 7691169056134802481, guid: c3fae7be43c54de4280935faca3985d4, type: 3}
+  infectedColor: {r: 1, g: 0.5, b: 0, a: 1}
+  colorDelay: 0.25
+  shrinkDuration: 0.3
+  destroyDelay: 1.2
