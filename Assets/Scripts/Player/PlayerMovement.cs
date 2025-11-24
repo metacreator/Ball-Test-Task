@@ -43,15 +43,18 @@ public class PlayerMovement : MonoBehaviour
         dir.y = 0f;
         dir.Normalize();
 
-        if (Physics.SphereCast(pos + Vector3.up * 0.5f,
+        if (Physics.SphereCast(
+                pos + Vector3.up * 0.5f,
                 sphereRadius,
                 dir,
                 out var hit,
                 100f,
                 obstacleMask))
         {
-            if (hit.collider.isTrigger)
+            if (hit.collider == null || hit.collider.gameObject == null)
+                return;
 
+            if (hit.collider.isTrigger)
                 return;
 
             var playerRadius = transform.localScale.x * 0.5f;
@@ -70,6 +73,8 @@ public class PlayerMovement : MonoBehaviour
             }
 
             var target = pos + dir * d;
+            target.y = pos.y;
+
             MoveTo(target);
         }
         else
@@ -78,8 +83,7 @@ public class PlayerMovement : MonoBehaviour
             MoveTo(target);
         }
     }
-
-
+    
     private void MoveTo(Vector3 target)
     {
         IsMoving = true;
