@@ -6,7 +6,7 @@ public class PlayerBall : MonoBehaviour
     public event Action<float> OnScaleChanged;
 
     [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private float minAllowedFraction = 0.1f;
+    [SerializeField] private float minAllowedFraction = 0.2f;
 
     public bool IsMoving => playerMovement.IsMoving;
     public float MinAllowedScale => _originalScale * minAllowedFraction;

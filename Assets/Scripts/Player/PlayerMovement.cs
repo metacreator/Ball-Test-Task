@@ -5,8 +5,9 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")] [SerializeField] private float moveDuration = 0.45f;
     [SerializeField] private float bounceHeight = 1f;
-    [SerializeField] private float stopBeforeObstacle = 0.6f;
+    [SerializeField] private float stopBeforeObstacle = 0.8f;
     [SerializeField] private float sphereRadius = 0.25f;
+    [SerializeField] private Game game;
 
     [Header("References")] [SerializeField]
     private Transform door;
@@ -50,17 +51,23 @@ public class PlayerMovement : MonoBehaviour
                 obstacleMask))
         {
             if (hit.collider.isTrigger)
+
                 return;
-            
+
             var playerRadius = transform.localScale.x * 0.5f;
             var obstacleRadius = hit.collider.bounds.extents.x;
 
-            var extraOffset = obstacleRadius * 0.5f;
+            var extraOffset = obstacleRadius;
 
             var d = hit.distance - (playerRadius + stopBeforeObstacle + extraOffset);
 
             if (d <= 0.1f)
+            {
+                if (game.PlayerIsTooSmall)
+                    game.Fail("No shots left to clear obstacles");
+
                 return;
+            }
 
             var target = pos + dir * d;
             MoveTo(target);

@@ -49,8 +49,10 @@ public class PlayerInput : MonoBehaviour
 
     private void OnTapStarted(InputAction.CallbackContext ctx)
     {
-        if(playerBall.IsMoving) return;
-        
+        if (!game.IsPlaying) return;
+        if (playerBall.IsMoving) return;
+        if (playerBall.IsTooSmall) return;
+
         var screenPos = _controls.Player.TapPosition.ReadValue<Vector2>();
         var ray = Camera.main.ScreenPointToRay(screenPos);
 
@@ -63,7 +65,7 @@ public class PlayerInput : MonoBehaviour
         var hitPoint = ray.GetPoint(enter);
 
         var dir = (hitPoint - playerBall.transform.position);
-        dir.y = 0; 
+        dir.y = 0;
         dir.Normalize();
 
         var spawnPos = playerBall.transform.position + dir * spawnDistance;

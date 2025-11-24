@@ -11,6 +11,7 @@ public class Game : MonoBehaviour
     public bool LevelFailed { get; private set; }
     public bool LevelCompleted { get; private set; }
     public bool IsPlaying { get; private set; }
+    public bool PlayerIsTooSmall => playerBall.IsTooSmall;
 
     private bool _ended;
 
