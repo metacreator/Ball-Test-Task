@@ -12,6 +12,7 @@ public class Game : MonoBehaviour
     public bool LevelCompleted { get; private set; }
     public bool IsPlaying { get; private set; }
     public bool PlayerIsTooSmall => playerBall.IsTooSmall;
+    public string LastFailReason { get; private set; }
 
     private bool _ended;
 
@@ -27,24 +28,15 @@ public class Game : MonoBehaviour
         IsPlaying = true;
     }
 
-
     public void Fail(string reason = "")
     {
         if (LevelFailed || LevelCompleted) return;
+        LastFailReason = reason;
+
         LevelFailed = true;
         IsPlaying = false;
+
         Debug.Log("LEVEL FAILED: " + reason);
-    }
-
-
-    public void CompleteLevel()
-    {
-        if (LevelFailed || LevelCompleted) return;
-
-        LevelCompleted = true;
-        IsPlaying = false;
-
-        Debug.Log("LEVEL COMPLETE!");
     }
 
     public void WinLevel()
@@ -52,19 +44,9 @@ public class Game : MonoBehaviour
         if (_ended) return;
         _ended = true;
 
-        Debug.Log("WIN!");
-        // TODO: UI animation or load next scene
-    }
+        LevelCompleted = true;
+        IsPlaying = false;
 
-
-    public void CheckDoorReached()
-    {
-        if (LevelCompleted || LevelFailed) return;
-
-        var dist = Vector3.Distance(playerBall.transform.position, finishLineTransform.position);
-        if (dist <= doorCompleteDistance)
-        {
-            CompleteLevel();
-        }
+        Debug.Log("LEVEL COMPLETE!");
     }
 }
