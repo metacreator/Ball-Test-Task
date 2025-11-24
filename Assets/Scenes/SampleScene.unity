@@ -1269,6 +1269,10 @@ PrefabInstance:
       propertyPath: door
       value: 
       objectReference: {fileID: 1787243840}
+    - target: {fileID: 1267400653253375742, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
+      propertyPath: game
+      value: 
+      objectReference: {fileID: 614337678}
     - target: {fileID: 1616976320324778771, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
       propertyPath: m_LocalScale.x
       value: 4
@@ -1323,7 +1327,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1829924010432203717, guid: 6cae83edda522f643ac862ae357ea64b, type: 3}
       propertyPath: minAllowedFraction
-      value: 0.3
+      value: 0.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
