@@ -43,6 +43,19 @@ public class PathRenderer : MonoBehaviour
     {
         if (!playerBall || !doorTarget) return;
 
+        var dist = Vector3.Distance(playerBall.transform.position, doorTarget.position);
+
+        if (dist <= 3f)
+        {
+            if (line.gameObject.activeSelf)
+                line.gameObject.SetActive(false);
+
+            return;
+        }
+
+        if (!line.gameObject.activeSelf)
+            line.gameObject.SetActive(true);
+
         var start = playerBall.transform.position;
         var end = doorTarget.position;
 
@@ -54,6 +67,7 @@ public class PathRenderer : MonoBehaviour
 
         UpdateFade();
     }
+
 
     private void BuildPath()
     {
